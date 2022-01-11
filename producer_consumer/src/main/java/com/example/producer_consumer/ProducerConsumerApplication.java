@@ -9,33 +9,41 @@ import javax.crypto.Mac;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 @SpringBootApplication
 public class ProducerConsumerApplication {
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(ProducerConsumerApplication.class, args);
-		List<Machine> machines = new ArrayList<>();
+		/*List<Machine> machines = new ArrayList<>();
 		List<Product> products = new ArrayList<>();
 		List<List> state = new ArrayList<>();
-		Q q1 = new Q();
-		Q q2 = new Q();
-		Q q3 = new Q();
-		Q q4 = new Q();
-		Product product1 = new Product();
+		Q q1 = new Q("q1");
+		Q q2 = new Q("q2");
+		Q q3 = new Q("q3");
+		Q q4 = new Q("q4");
+		Random random = new Random();
 
-		product1.name = "yaryora";
+		// create a big random number - maximum is ffffff (hex) = 16777215 (dez)
+		int nextInt = random.nextInt(0xffffff + 1);
+
+		// format it as hexadecimal string (with hashtag and leading zeros)
+		String colorCode = String.format("#%06x", nextInt);
+
+		// print it
+		//System.out.println("ana color "+colorCode);
+
+		Product product1 = new Product();
+		System.out.println("color "+ product1.color.toString());
 		products.add(product1);
 		Product product2 = new Product();
-		product2.name = "marioma";
 		products.add(product2);
 		Product product3 = new Product();
-		product3.name = "toto";
 		products.add(product3);
 		Product product4 = new Product();
-		product4.name = "lolo";
 		products.add(product4);
-		Q q5 = new Q();
+		Q q5 = new Q("q5");
 		q1.addProduct(product1);
 		q1.addProduct(product2);
 		q1.addProduct(product3);
@@ -49,11 +57,11 @@ public class ProducerConsumerApplication {
 		qb3.add(q1);
 
 
-		Machine m1 = new Machine(qb1, q2, 2000,1);
+		Machine m1 = new Machine("m1", qb1, q2, 2000);
 		machines.add(m1);
-		Machine m2 = new Machine(qb2, q4, 1000,2);
+		Machine m2 = new Machine("m2", qb2, q4, 1000);
 		machines.add(m1);
-		Machine m3 = new Machine(qb3, q3, 10 ,3);
+		Machine m3 = new Machine("m3", qb3, q3, 10);
 		machines.add(m1);
 		state.add(machines);
 		state.add(products);
@@ -70,11 +78,13 @@ public class ProducerConsumerApplication {
 		List<Product> productList = new ArrayList<>();
 		productList = originator.restore(careTaker.getMomento());
 		for(int i=0; i< productList.size(); i++) {
-			System.out.println(productList.get(i).getName()+ " ana hena " + productList.get(i).getColor());
+			System.out.println( " ana hena " + productList.get(i).getColor());
 		}
 		t1.start();
 		t2.start();
 		t3.start();
+
+		 */
 	}
 
 }

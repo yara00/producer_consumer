@@ -12,6 +12,10 @@ public class Q implements ObservableQueue {
     private Queue<Product> queue = new LinkedList<Product>();
     private Set<AvailableObserver> observers= new HashSet<AvailableObserver>();
     public Lock lock = new ReentrantLock();
+    String id = "";
+    public Q(String id) {
+        this.id = id;
+    }
 
     @Override
     public void register(AvailableObserver observer) {
@@ -22,7 +26,9 @@ public class Q implements ObservableQueue {
         //System.out.println("Size "+ this.queue.size());
         return queue.isEmpty();
     }
-
+    public String getId() {
+        return id;
+    }
     @Override
     public  synchronized Product getProduct() {
         //lock.lock();
@@ -37,11 +43,13 @@ public class Q implements ObservableQueue {
         //lock.unlock();
     }
 
-
+    public int productsNumber() {
+        return queue.size();
+    }
     public void productsAvailable(){
         if(!queue.isEmpty()){
             for(AvailableObserver observer : observers){
-                observer.notify(this);
+                observer.notifyMachine();
             }
         }
     }

@@ -4,22 +4,14 @@ import java.awt.*;
 import java.util.Random;
 
 public class Product {
-    Random rand = new Random();
-    float r = rand.nextFloat();
-    float g = rand.nextFloat();
-    float b = rand.nextFloat();
-    Color color;
-    String name = "";
-    public  String getName() {
-        return this.name;
-    }
-
+    String color = "";
     public Product() {
-        this.color = new Color(r, g, b);
-
+        Random random = new Random();
+        int nextInt = random.nextInt(0xffffff + 1);
+        color = String.format("#%06x", nextInt);
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
