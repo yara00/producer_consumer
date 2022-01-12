@@ -41,9 +41,11 @@ export class Queue implements Tool{
             text.setAttribute('y', (this.y + 25).toString());
             this.offsetX = event.offsetX;
             this.offsetY = event.offsetY;
+            return true;
         }
         else {
             window.alert('Only unjoined Queues can be moved.');
+            return false;
         }
     }
     select(x: number, y: number) {

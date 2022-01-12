@@ -88,7 +88,7 @@ export class AppComponent {
       this.Tool.draw(event);
     }
     else if (this.isMoving) {
-      this.select(event);
+      this.select(event)
     }
     else if (this.isRemove) {
       this.select(event);
@@ -99,6 +99,7 @@ export class AppComponent {
         this.Queues.splice(this.indx, 1);
       }
       else if (this.selectedTool.type == 'Machine') {
+        this.order.splice(this.indx, 1);
         this.Machines.splice(this.indx, 1);
       }
     }
@@ -139,7 +140,9 @@ export class AppComponent {
         this.isMoving = false;
         return;
       }
-      this.selectedTool.move(event, this.selectedTool.id);
+      if(!this.selectedTool.move(event, this.selectedTool.id)) {
+        this.isMoving = false;
+      }
     }
   }
 
@@ -168,10 +171,16 @@ export class AppComponent {
       }
       console.log("order", this.order)
     }
-    else if (this.isMoving) {
+    if (this.isMoving) {
+      console.log("ana d5lt")
       this.isMoving = false;
+      
     }
+    this.isMoving = false;
+    this.isDrawing = false;
+    this.isRemove = false;  
     this.isDown = false;
+    this.selectedTool = null;
   }
 
   reset() {
@@ -182,7 +191,13 @@ export class AppComponent {
     this.isDrawing = false;
     this.isRemove = false;
     this.isDown = false;
+    this.order = [];
+    this.idJoin = 0;
+    this.idMachine = 0;
+    this.idQueue = 0;
     document.querySelector('svg').innerHTML = "";
+    this.createArrow();
+    //this.renderer.createElement('svg', marker)
   }
 
   checkJoin() {
@@ -192,6 +207,7 @@ export class AppComponent {
     if (point1[0] !== point2[0] && point1[0] !== "" && point2[0] !== "") {
       if (point1[0] === 'machine' && point2[0] === 'queue') {
         this.Machines[point1[1]].status = 'joined';
+        this.Queues[point2[1]].status = 'joined';
         let index = this.order.findIndex(e => e.id == point1[2]);
         if (this.order[index].after.length === 0) {
           this.order[index].after = point2[2];
@@ -204,6 +220,7 @@ export class AppComponent {
         
       }
       else if (point1[0] === 'queue' && point2[0] === 'machine') {
+        this.Machines[point2[1]].status = 'joined';
         this.Queues[point1[1]].status = 'joined';
         let index = this.order.findIndex((e) => e.id == point2[2]);
         this.order[index].before.push(point1[2]);
@@ -237,22 +254,44 @@ export class AppComponent {
     }
     else {
       for (let i = 0; i < this.Machines.length; i++){
+        console.log("machine", this.Machines)
+        console.log("machine", this.Machines.length)
         if (this.Machines[i].status !== "joined") {
           window.alert('All Machines should be connected to Queues.');
           return false;
         }
-        /*
+        
         for (let i = 0; i < this.Queues.length; i++){
+          console.log("q", this.Queues[i])
           if (this.Queues[i].status !== "joined") {
             window.alert("All Queues should be connected to the Graph.");
             return false;
           }
-        }*/
-        return true;
+        }
+        
       }
+      
     }
-    return false;
+    return true;
   }
+  createArrow(){
+    var defs = this.renderer.createElement('defs','svg');
+    var marker = this.renderer.createElement('marker', 'svg');
+    this.renderer.appendChild(defs, marker);
+    this.renderer.setAttribute(marker, 'id', "triangle");
+    this.renderer.setAttribute(marker, 'viewBox', "0 0 10 10");
+    this.renderer.setAttribute(marker, 'refX', "1");
+    this.renderer.setAttribute(marker, 'refY', "5");
+    this.renderer.setAttribute(marker, 'markerUnits', "strokeWidth");
+    this.renderer.setAttribute(marker, 'markerWidth', "10");
+    this.renderer.setAttribute(marker, 'markerHeight', "10");
+    this.renderer.setAttribute(marker, 'orient', "auto");
+    var path = this.renderer.createElement('path', "svg");
+    this.renderer.setAttribute(path,"d" ,"M 0 0 L 10 5 L 0 10 z");
+    this.renderer.setAttribute(path, "fill", "#000000");
+    this.renderer.appendChild(marker, path);
+    this.renderer.appendChild(this.svg.nativeElement, defs);  
+   }
 
   simulate() {
     if (this.checkGraph()) {
@@ -273,6 +312,9 @@ export class AppComponent {
   }
 
   replay() {
+    for(let i = 0; i < this.Queues.length; i++) {
+      this.Queues[i].edit(0)
+    }
     this.http.post("http://localhost:8080/simulation/replay",{}, {
         
       }).subscribe(()=>{console.log("lolo")})

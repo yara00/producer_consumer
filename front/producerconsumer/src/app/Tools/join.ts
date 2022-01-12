@@ -32,7 +32,9 @@ export class Join implements Tool {
         this.line.setAttribute("x2", this.x2.toString());
         this.line.setAttribute("y2", this.y2.toString());
     }
-    move(event: MouseEvent, id: number) { }
+    move(event: MouseEvent, id: number) {
+        return false;
+     }
     select(x: number, y: number): boolean {
         return false;
     }

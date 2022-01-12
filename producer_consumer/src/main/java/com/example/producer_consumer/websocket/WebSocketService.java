@@ -14,8 +14,8 @@ public class WebSocketService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public static synchronized void  notifyFrontEnd(final String topicSuffix ) {
-        messagingTemplate.convertAndSend("/topic/" , topicSuffix);
+    public static synchronized void  notifyFrontEnd(final String message ) {
+        messagingTemplate.convertAndSend("/topic/" , message);
     }
 
 }

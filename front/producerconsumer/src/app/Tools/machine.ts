@@ -33,9 +33,11 @@ export class Machine implements Tool{
             shape.setAttribute("cy", this.y.toString());
             this.offsetX = event.offsetX;
             this.offsetY= event.offsetY;
+            return true;
         }
         else {
             window.alert("Only unjoined Machines can be moved.");
+            return false;
         }
     }
     select( x: number, y: number): boolean { 

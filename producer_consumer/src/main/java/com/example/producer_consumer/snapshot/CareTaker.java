@@ -1,7 +1,5 @@
 package com.example.producer_consumer.snapshot;
 
-import java.util.ArrayList;
-
 public class CareTaker {
 
     private Momento momentos;

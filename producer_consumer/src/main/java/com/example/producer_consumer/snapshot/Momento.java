@@ -1,8 +1,6 @@
 package com.example.producer_consumer.snapshot;
 
-import com.example.producer_consumer.Machine;
-
-import javax.crypto.Mac;
+import com.example.producer_consumer.producerconsumer.Machine;
 import java.util.List;
 
 public class Momento {

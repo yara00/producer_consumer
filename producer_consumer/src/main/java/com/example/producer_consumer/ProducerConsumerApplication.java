@@ -13,7 +13,7 @@ public class ProducerConsumerApplication {
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(ProducerConsumerApplication.class, args);
-
+/*
 		ArrayList<Machine> machines = new ArrayList<>();
 		List<Product> products = new ArrayList<>();
 		List<List> state = new ArrayList<>();
@@ -91,7 +91,9 @@ public class ProducerConsumerApplication {
 
 		}
 
+ */
 	}
+}
 
 
 
