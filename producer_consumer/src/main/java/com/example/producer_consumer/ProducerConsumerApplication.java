@@ -6,17 +6,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.crypto.Mac;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @SpringBootApplication
 public class ProducerConsumerApplication {
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(ProducerConsumerApplication.class, args);
-		List<Machine> machines = new ArrayList<>();
+
+		ArrayList<Machine> machines = new ArrayList<>();
 		List<Product> products = new ArrayList<>();
 		List<List> state = new ArrayList<>();
 		Q q1 = new Q("q1");
@@ -58,32 +56,42 @@ public class ProducerConsumerApplication {
 
 
 		Machine m1 = new Machine("m1", qb1, q2, 2000);
-		machines.add(m1);
 		Machine m2 = new Machine("m2", qb2, q4, 1000);
-		machines.add(m1);
 		Machine m3 = new Machine("m3", qb3, q3, 10);
 		machines.add(m1);
-		state.add(machines);
-		state.add(products);
+		machines.add(m2);
+		machines.add(m3);
+		ArrayList<Machine> clonedList = new ArrayList<>();
+
+		Iterator<Machine> it = machines.iterator();
+		while (it.hasNext()) {
+			Machine s = it.next();
+			Machine newS = new Machine(s.getId(), s.getQueuesBefore(),s.getQueueAfter(), 1000);
+			clonedList.add(newS);
+		}
+		//Machine student = clonedList.get(1);
+		//student.setName("Jhon");
+
+		System.out.println("Cloned list : " + clonedList);
+		System.out.println("Original list : " + machines);
 		Thread t1 = new Thread(m1);
 		t1.setName("Machine1");
 		Thread t2 = new Thread(m2);
 		Thread t3 = new Thread(m3);
 		t2.setName("Machine2");
 		t3.setName("Machine3");
-		CareTaker careTaker = new CareTaker();
-		Originator originator = new Originator();
-		originator.setState(state);
-		careTaker.addMomento(originator.save());
-		List<Product> productList = new ArrayList<>();
-		productList = originator.restore(careTaker.getMomento());
-		for(int i=0; i< productList.size(); i++) {
-			System.out.println( " ana hena " + productList.get(i).getColor());
-		}
 		t1.start();
 		t2.start();
 		t3.start();
+		CareTaker careTaker = new CareTaker();
+		Originator originator = new Originator();
+		originator.setState(clonedList);
+		careTaker.addMomento(originator.save());
+		originator.restore(careTaker.getMomento());
+
+		}
 
 	}
 
-}
+
+

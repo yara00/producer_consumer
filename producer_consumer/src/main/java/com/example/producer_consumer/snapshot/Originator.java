@@ -2,13 +2,15 @@ package com.example.producer_consumer.snapshot;
 
 import com.example.producer_consumer.Machine;
 import com.example.producer_consumer.Product;
+import com.example.producer_consumer.Simulation;
 
+import javax.crypto.Mac;
 import java.util.List;
 
 public class Originator {
-    private List<List> state;
+    private List<Machine> state;
 
-    public void setState(List<List> state) {
+    public void setState(List<Machine> state) {
         System.out.println("Originator setting state to " + state);
         this.state = state;
     }
@@ -18,12 +20,18 @@ public class Originator {
         return new Momento(state);
     }
 
-    public List<Product> restore(Momento m) {
+    public synchronized void restore(Momento m) {
         state = m.getState();
         System.out.println("Originator: Restoring state from momento to "+ state);
-        System.out.println(state.get(0).get(0));
-        List<Product> products = state.get(1);
-        return products;
+        List<Machine> machines = state;
+        while(!Simulation.threads.isEmpty()) {
+            Simulation.threads.remove().interrupt();
+        }
+        for(Machine machine : machines){
+            Thread thread = new Thread(machine);
+            System.out.println("thread" + thread.getName());
+            thread.start();
+        }
     }
 }
 

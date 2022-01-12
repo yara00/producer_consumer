@@ -1,0 +1,29 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 1000px;
+    height: 1000px;
+}
+
+button{
+    font-size: 16px;  
+    border: none;
+    outline: none;
+    color: black;
+    font-family: inherit;
+    padding: 14px 16px;
+    margin: 10px;
+    border-radius: 10%;
+}
+
+.flex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+input[type=number] {
+    width: 100px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 16px;
+}

@@ -8,12 +8,29 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Machine implements Runnable, AvailableObserver {
+public class Machine implements Runnable, AvailableObserver, Cloneable {
     public Machine(String id,ArrayList<Q> queueBefore, Q queueAfter, long time) {
         this.queuesBefore = queueBefore;
         this.queueAfter = queueAfter;
         this.time = time;
         this.id = id;
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public ArrayList<Q> getQueuesBefore() {
+        return queuesBefore;
+    }
+
+    public Q getQueueAfter() {
+        return queueAfter;
+    }
+
+    public Machine(Machine machine) {
+
     }
 
     Color color;
@@ -27,7 +44,7 @@ public class Machine implements Runnable, AvailableObserver {
     public void produce(Product product){
         this.queueAfter.addProduct(product);
         String message = this.queueAfter.getId() +","+ this.queueAfter.productsNumber() +
-                "," + this.id + "," + this.defaultColor + " Produce";
+                "," + this.id + "," + this.defaultColor;
         System.out.println(message);
         WebSocketService.notifyFrontEnd(message);
 
@@ -37,7 +54,7 @@ public class Machine implements Runnable, AvailableObserver {
         Product product = queueBefore.getProduct();
       //  System.out.println(Thread.currentThread().getName() + " Consuming " + product.getColor());
         String message = queueBefore.getId() +","+ queueBefore.productsNumber() +
-                "," + this.id + "," + product.getColor() +" Consume";
+                "," + this.id + "," + product.getColor();
         System.out.println(message);
         WebSocketService.notifyFrontEnd(message);
         Thread.sleep(time);
@@ -69,11 +86,15 @@ public class Machine implements Runnable, AvailableObserver {
                     }
                     if (counter == this.queuesBefore.size()) {
                         try {
-                           // System.out.println(Thread.currentThread().getName() + " Nayem");
+                            System.out.println(this.queuesBefore.size());
+                            System.out.println(Thread.currentThread().getName() + " Nayem");
                             isAvailable = true;
+                          //  System.out.println("nayem");
                             this.queuesBefore.wait();
                         } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
                             e.printStackTrace();
+                            return;
                         }
                     }
                 }
@@ -90,6 +111,10 @@ public class Machine implements Runnable, AvailableObserver {
                 this.queuesBefore.notify();
             }
         }
+    }
+    public Object clone() throws CloneNotSupportedException {
+        Machine octClone = (Machine) super.clone();
+        return octClone;
     }
 }
 
