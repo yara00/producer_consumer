@@ -6,16 +6,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-    <div class="flex">
-      <button (click)="draw('machine')">Add Machine</button>
-      <button (click)="draw('queue')">Add Queue</button>
-      <button (click)="draw('join')">Join</button>
-      <button (click)="move()">Move</button>
-      <button (click)="remove()">Remove</button>
-      <button (click)="reset()">Reset</button>
-      <button (click)="simulate()">Simulate</button>
+    
+    <div>
+      <h1>Producer Consumer Simulation</h1>
+      <button class="main-button"(click)="draw('machine')">Add Machine</button>
+      <button class="main-button"(click)="draw('queue')">Add Queue</button>
+      <button class="main-button"(click)="draw('join')">Join</button>
+      <button class="main-button"(click)="move()">Move</button>
+      <button class="main-button"(click)="remove()">Remove</button>
+      <button class="main-button"(click)="reset()">Reset</button>
+      <button class="main-button"(click)="simulate()">Simulate</button>
+      <button class="main-button"(click)="replay()">Replay</button>
       <input type="number" id="number-of-machines" min="1" placeholder="Number of Products" [(ngModel)]="numProducts">
-      <button (click)="replay()">Replay</button>
+      
     </div>
     <svg #svg 
         width="1200" 
